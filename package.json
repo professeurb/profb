@@ -1,0 +1,35 @@
+{
+  "name": "profb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@fontsource/francois-one": "^4.1.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@mdx-js/loader": "^1.6.22",
+    "@next/mdx": "^10.0.4",
+    "@theme-ui/presets": "^0.3.5",
+    "@theme-ui/prism": "^0.3.5",
+    "animejs": "^3.2.1",
+    "gray-matter": "^4.0.2",
+    "lodash": "^4.17.20",
+    "next": "^10.0.4",
+    "parse-numeric-range": "^1.2.0",
+    "prism-react-renderer": "^1.1.1",
+    "react": "16.13.0",
+    "react-dom": "^17.0.1",
+    "react-icons": "^4.1.0",
+    "rehype-katex": "^4.0.0",
+    "remark-math": "3",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.1",
+    "theme-ui": "^0.3.5",
+    "typeface-francois-one": "^1.1.13",
+    "typeface-oswald": "^1.1.13"
+  },
+  "scripts": {
+    "dev": "next"
+  }
+}

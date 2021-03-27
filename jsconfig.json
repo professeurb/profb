@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@api": ["api/index.js"],
+      "@articles": ["_articles/*"],
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@contexts/*": ["contexts/*"]
+    }
+  }
+}

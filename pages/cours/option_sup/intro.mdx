@@ -1,0 +1,112 @@
+export const meta = {
+  title: "Introduction au langage OCaml",
+};
+
+# Deux paradigmes de programmation
+
+On distingue en général de façons principales d'envisager la programmation, deux **paradigmes** principaux :
+
+- **La programmation impérative** se base sur l'idée qu'un ordinateur est une machine à mémoire vive. Ainsi, un programme va être une succession d'instruction qui vont modifier l'état de l'ordinateur, c'est-à-dire les valeurs stockées dans différentes cases mémoire.
+
+- **La programmation fonctionnelle** est basée sur la notion de fonctions, i.e. de transformations de données que l'on va composer. Avec cette approche, on ne se préoccupe pas de la gestion de la mémoire. De plus, dans un langage fonctionnel, il n'y a pas de distinction entre instruction et expression, tout est expression.
+
+On peut aussi mentionner la **programmation objet** qui concerne plus la manière dont sont organisées les données que l'on manipule. Mais c'est un aspect complémentaire et relativement indépendant de la distinction impératif/fonctionnel.
+
+Le langage Python est plutôt un langage impératif, alors que le langage OCaml est plutôt fonctionnel. Cependant, comme beaucoup de langages modernes, chacun des deux langages possède des capacités relevant à la fois de l'impératif et du fonctionnel.
+
+> Prenons l'exemple de la factorielle. On peut, _grosso modo_, la définir de deux manières:
+
+$$
+n! = \prod_{k = 1}^n k \qquad 0! = 1, \quad \forall \, n,\ (n + 1)! = (n + 1) \times n!
+$$
+
+# Présentation du langage
+
+Voici de premiers éléments du langage, que l'on continuera de développer dans les chapitres suivants.
+
+## Types de données
+
+La langage OCaml est un langage où la notion de **type** est primordiale, via un principe de _sureté de typage_&nbsp;: le compilateur vérifie pour tous les appels de fonctions que les arguments ont le bon type. Ainsi, on est sûr que lors de l'exécution du programmen, il n'y a aura pas de problème de données n'ayant pas le bon type (Python ne fait pas ce genre de vérification à la compilation, mais à l'exécution.).
+
+### Types simples
+
+#### Entiers et flottants
+
+```ocaml
+# 1 + 1 ;;
+- : int = 2
+# 2.7 *. 3.4 ;;
+- : float = 9.18
+# 2 ** 4 ;;
+Line 1, characters 0-1:
+Error: This expression has type int but an expression was 
+        expected of type float
+  Hint: Did you mean `2.'?
+# 2. ** 4. ;;
+- : float = 16.
+```
+
+> Les entiers sont signés, et compris entre $\llbracket -2^{62}, 2^{62} - 1 \rrbracket$ (dans une architecture 64 bits). Dans un autre langage, l'intervalle des valeurs possibles est en général $\llbracket -2^{63}, 2^{63} - 1 \rrbracket$ mais OCaml utilise un chiffre binaire pour la gestion de la mémoire.
+
+#### Booléens
+
+```ocaml
+# true ;;
+- : bool = true
+# not true ;;      (* négation *)
+- : bool = false
+# false || true ;; (* disjonction *)
+- : bool = true
+# true && false ;; (* conjonction *)
+- : bool = false
+# 1 = 2 ;;         (* test d'égalité *)
+- : bool = false
+# 3 <> 4 ;;        (* test de non-égalité *)
+- : bool = true
+```
+
+> La conjonction et la disjonction sont paresseuses~: si leur valeur peut être déterminée à partir du premier argument, le second n'est pas évalué.
+
+```ocaml
+# true || (1 / 0) = 2 ;;
+- : bool = true
+```
+
+#### Caractères et chaînes de caractères
+
+Contrairement à Python, et comme l'immense majorité des langages de programmation, OCaml distingue les caractères (que l'on entoure de&nbsp;`'`) des chaînes de caractères (entourées de&nbsp;`"`).
+
+```ocaml
+# 'a' ;;
+- : char = 'a'
+# "Bonjour" ;;
+- : string = "Bonjour"
+# String.length "Bonjour" ;;
+- : int = 7
+```
+
+### Définition de variables
+
+Faisons une courte pause pour présenter la définition de variables.
+
+Commençons par la définition de variables globales dont la syntaxe est <<~\ml{let} identificateur \ml{=} expression~>> que l'on peut compléter de définitions supplémentaires à l'aide de~\ml{and}.
+
+Un nom de variable (on parlera d'\emph{identifiant}) commence obligatoirement par une lettre \textbf{minuscule}, et peut ensuite contenir des lettres (minuscules ou majuscules), des chiffres et les caractères <<~\ml{_}~>> et <<~\ml{'}~>>.\footnote{Pour être rigoureux, un identifiant peut aussi commencer par un \emph{underscore}.}
+
+```ocaml
+# let x = 3 ;;
+val x : int = 3
+# x + 1 ;;
+- : int = 4
+# let y = 'a' and z = false || true ;;
+val y : char = 'a'
+val z : bool = true
+```
+On peut aussi faire des définitions locales en ajoutant~\ml{in}.
+
+```ocaml
+# let y = 2 + 2 in y * y ;;
+- : int = 16
+# y ;;
+- : char = 'a'
+```
