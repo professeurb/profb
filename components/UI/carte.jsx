@@ -1,6 +1,3 @@
-/** @jsx jsx */
-import { jsx } from "theme-ui";
-
 import React, { useRef, useEffect, useLayoutEffect, useContext } from "react";
 import usePrevious from "@hooks/usePrevious";
 import anime from "animejs";

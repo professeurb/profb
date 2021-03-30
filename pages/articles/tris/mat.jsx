@@ -1,9 +1,6 @@
-/** @jsx jsx */
-import { jsx } from "theme-ui";
-
 import React, { useState, useContext } from "react";
 import Carte from "@components/UI/carte.jsx";
-import { Flex, Button } from "theme-ui";
+import { Flex, Button } from "@chakra-ui/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRandom } from "@fortawesome/free-solid-svg-icons";

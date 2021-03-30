@@ -1,8 +1,6 @@
-/** @jsx jsx */
 import React from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import rangeParser from "parse-numeric-range";
-import { jsx, Styled } from "theme-ui";
 
 const getShouldHighlightLine = (hl) => {
   if (hl) {

@@ -1,31 +1,35 @@
 import React from "react";
 
 import "katex/dist/katex.min.css";
-import { ThemeProvider } from "theme-ui";
-import theme from "style/theme";
-import Prism from "@theme-ui/prism";
+import {
+  ChakraProvider,
+  extendTheme,
+  Container,
+  Heading,
+} from "@chakra-ui/react";
+// import theme from "style/theme";
+// import Prism from "@theme-ui/prism";
 import CodeBlock from "@components/codeblock";
-import { Container } from "theme-ui";
 
 import Footer from "@components/header";
 
 // https://theme-ui.com/theme-spec
 
-const my_components = {
-  // h1: (props) => <h1 style={{ color: "green" }} {...props} />,
+const theme = extendTheme({
+  config: {
+    initialColorMode: "system",
+    useSystemColorMode: true,
+  },
+});
+
+const components = {
+  h1: (props) => <Heading as="h1" {...props} />,
+  h2: (props) => <Heading as="h2" {...props} />,
   // pre: (props) => <div {...props} />,
   pre: ({ children }) => {
-    console.log("Pre");
-    console.log(children);
-    // return <>{children}</>;
-    return (
-      <>
-        <CodeBlock {...children.props} />
-        {/* <Prism {...children.props} /> */}
-      </>
-    );
+    return <CodeBlock {...children.props} />;
   },
-  code: Prism,
+  // code: Prism,
   // inlineCode: (props) => {
   //   console.log("Code");
   //   console.log(props);
@@ -34,6 +38,7 @@ const my_components = {
 };
 
 export default function App(props) {
+  // console.log(props)
   const { Component, pageProps } = props;
   // if (props.Component.isMDXComponent) console.log(props);
   // Ce n'est pas très orthodoxe ainsi, mais cela donne une chance
@@ -41,7 +46,7 @@ export default function App(props) {
   const pageComponent = Component(pageProps);
   // if (props.Component.isMDXComponent) console.log(component);
   return (
-    <ThemeProvider theme={theme} components={my_components}>
+    <ChakraProvider theme={theme} components={components}>
       <Footer />
       {props.Component.isMDXComponent && (
         <Container sx={{ my: "50pt", variant: "text.heading" }}>
@@ -50,6 +55,6 @@ export default function App(props) {
         </Container>
       )}
       <Container>{pageComponent}</Container>
-    </ThemeProvider>
+    </ChakraProvider>
   );
 }

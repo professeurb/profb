@@ -1,5 +1,3 @@
-import { jsx } from "theme-ui";
-
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FaPlay, FaPause, FaStepForward } from "react-icons/fa";
-import { Button, Flex, Icon } from "theme-ui";
+import { Button, Flex, Icon } from "@chakra-ui/react";
 
 export class AnimButton extends React.Component {
   constructor(props) {
