@@ -25,7 +25,7 @@ plus_grand = [7, 4, 5, 6, 8, 9]
 Ensuite, on trie `t` et `d` et on retourne la liste
 
 ```python
-plus_petit_trie + [pivot] + plus_grand_trie
+plus_petit_trié + [pivot] + plus_grand_trié
 ```
 
 Comment fait-on pour trier les sous-listes&nbsp;? En rappelant l'algorithme, sachant qu'une liste de longueur&nbsp;`1` est déjà triée.
@@ -62,12 +62,12 @@ Dans la version originale de Hoare, en choisissant toujours comme pivot le premi
 
 Et lorsqu'il y a un problème, si `i` pointe sur un élément strictement plus grand que le pivot et `j` pointe sur un élément plus petit, on les échange, et on peut avancer.
 
-Quel est le problème, donc&nbsp;? C'est qu'il est assez difficile de montrer que la _bonne_ version est vraiment meilleure que la _mauvaise_ en Python, puisque que le code de la fonction `t` ci-dessus est (légèrement) plus rapide que le code _propre_ (et très commenté, peut-être un peu trop, mais les invariants de boucles permettent de vérifier facilement la correction de l'implémentation) de Quicksort&nbsp;:
+Quel est le problème, donc&nbsp;? C'est qu'il est assez difficile de montrer que la _bonne_ version est vraiment meilleure que la _mauvaise_ en Python, puisque que le code de la fonction `pseudo_quicksort` ci-dessus est (légèrement) plus rapide que le code _propre_ (et très commenté, peut-être un peu trop, mais les invariants de boucles permettent de vérifier facilement la correction de l'implémentation) de Quicksort&nbsp;:
 
 ```python
 def quicksort(l):
     def aux(debut, fin) :
-        # Si debut <= fin + 1, la liste est de longueur au plus 1,
+        # Si fin <= debut + 1, la liste est de longueur au plus 1,
         # elle est déjà triée.
         if fin <= debut + 1:
             return
@@ -81,7 +81,7 @@ def quicksort(l):
             # Invariant de boucle
             # 1. debut < i, j < fin et i <= j + 1
             # 2. si debut < k < i alors l[k] <= pivot
-            # 3. si j < k < fin alors pivot <= l[k]
+            # 3. si j < k < fin alors pivot < l[k]
             while i <= j and l[i] <= pivot:
                 i += 1
             # en sortie de boucle, on a
@@ -140,21 +140,21 @@ def chrono(n, f):
     return t1 / f, t2 / f
 ```
 
-| Nombre d'éléments | Temps `t` | Temps `t` |
-| :---------------: | :-------------------------: | :------------------: |
-|        100        |           0.00012           |       0.00011        |
-|       1000        |           0.00169           |       0.00184        |
-|       10000       |           0.02376           |       0.02676        |
-|      100000       |           0.29259           |       0.32532        |
-|      1000000      |           3.97823           |       4.01646        |
+| Nombre d'éléments | Temps `pseudo_quicksort` | Temps `quicksort` |
+| :---------------: | :----------------------: | :---------------: |
+|        100        |         0.00012          |      0.00011      |
+|       1000        |         0.00169          |      0.00184      |
+|       10000       |         0.02376          |      0.02676      |
+|      100000       |         0.29259          |      0.32532      |
+|      1000000      |         3.97823          |      4.01646      |
 
-À chaque fois, si les temps mis sont comparables, `t` est en général plus rapide que `t`.
+À chaque fois, si les temps mis sont comparables, `pseudo_quicksort` est en général plus rapide que `quicksort`.
 
 ## Un autre comparatif
 
-Comparons maintenant les temps d'exécutions avec une implémentation plus sérieuse, en réitérant l'expérience en langage C++. Voici tout d'abord le code de `t`&nbsp;:
+Comparons maintenant les temps d'exécutions avec une implémentation plus sérieuse, en réitérant l'expérience en langage C++. Voici tout d'abord le code de `pseudo_quicksort`&nbsp;:
 
-```c++
+```cpp
 std::vector<int> pseudo_quicksort(std::vector<int> l) {
   if (l.size() <= 1) {
     return l;
@@ -179,9 +179,9 @@ std::vector<int> pseudo_quicksort(std::vector<int> l) {
 }
 ```
 
-Voici maintenant le code de `t`&nbsp;:
+Voici maintenant le code de `quicksort`&nbsp;:
 
-```c++
+```cpp
 void quicksort_aux(int l[], int debut, int fin) {
   if (fin <= debut + 1)
     return;
@@ -235,17 +235,17 @@ found 4 outliers among 100 samples (4%)
 variance is severely inflated by outliers
 ```
 
-Ce que l'on peut y lire, c'est que la version `t` mets en moyenne 6.3364&nbsp;ms alors que la version `t` mets quand à elle... 854.245&nbsp;ms.
+Ce que l'on peut y lire, c'est que la version `quicksort` mets en moyenne 6.3364&nbsp;ms alors que la version `pseudo_quicksort` mets quand à elle... 854.245&nbsp;ms.
 
-Cette différence conséquente rends bien mieux compte de la différence entre `t` qui est un modèle d'efficacité, et `t` qui est un modèle d'inefficacité.
+Cette différence conséquente rends bien mieux compte de la différence entre `quicksort` qui est un modèle d'efficacité, et `pseudo_quicksort` qui est un modèle d'inefficacité.
 
 ## Utilisation mémoire
 
-Une autre grande différence entre les deux fonctions réside dans l'utilisation de la mémoire. Pour `t`, de nombreuses listes vont être créées, ce qui implique une consommation importante de mémoire.
+Une autre grande différence entre les deux fonctions réside dans l'utilisation de la mémoire. Pour `pseudo_quicksort`, de nombreuses listes vont être créées, ce qui implique une consommation importante de mémoire.
 
-À l'inverse, si l'on ne tient pas compte de l'espace de pile utilisé pour les appels récursifs, `t` nécessite une taille mémoire constante pour s'exécuter.
+À l'inverse, si l'on ne tient pas compte de l'espace de pile utilisé pour les appels récursifs, `quicksort` nécessite une taille mémoire constante pour s'exécuter.
 
-Il est possible d'illustrer cela à l'aide de la fonction `e` du module [`r`](http://pypi.python.org/pypi/memory_profiler), en procédant par exemple ainsi&nbsp;:
+Il est possible d'illustrer cela à l'aide de la fonction `profile` du module [`memory_profiler`](http://pypi.python.org/pypi/memory_profiler), en procédant par exemple ainsi&nbsp;:
 
 ```python
 
@@ -267,9 +267,9 @@ def test():
 test()
 ```
 
-Les commandes du module `c` permettent de nettoyer la mémoire avant l'appel aux fonctions de tri. La consommation mémoire vient alors exclusivement de ces fonctions.
+Les commandes du module `gc` permettent de nettoyer la mémoire avant l'appel aux fonctions de tri. La consommation mémoire vient alors exclusivement de ces fonctions.
 
-Si l'on note `y` ce fichier, en exécutant dans un _shell_ la commande
+Si l'on note `test.py` ce fichier, en exécutant dans un _shell_ la commande
 
 ```shell
 python3 -m memory_profiler test.py
@@ -278,7 +278,7 @@ python3 -m memory_profiler test.py
 on obtient un affichage de type
 
 ```
-Filename: d3.py
+Filename: test.py
 
 Line #    Mem usage    Increment   Line Contents
 ================================================
@@ -294,23 +294,23 @@ Line #    Mem usage    Increment   Line Contents
     52   38.852 MiB    0.000 MiB       quicksort(l2)
 ```
 
-On voit que l'exécution de `t` a nécessité 2.930 MiB de mémoire supplémentaire, alors que `t` en a nécessité 0.000 MiB.
+On voit que l'exécution de `pseudo_quicksort` a nécessité 2.930 MiB de mémoire supplémentaire, alors que `quicksort` en a nécessité 0.000 MiB.
 
 Le table suivant indique diverses mesures de consommation mémoire en fonction de la taille de la liste à trier.
 
-| Nombre d'éléments | Conso. `t` | Conso. `t` |
-| :---------------: | ---------------------------: | --------------------: |
-|       1000        |                    0.012 MiB |             0.000 MiB |
-|       10000       |                    0.504 MiB |             0.000 MiB |
-|      100000       |                    2.582 MiB |             0.000 MiB |
-|      1000000      |                   12.539 MiB |             0.000 MiB |
+| Nombre d'éléments | Conso. `pseudo_quicksort` | Conso. `quicksort` |
+| :---------------: | ------------------------: | -----------------: |
+|       1000        |                 0.012 MiB |          0.000 MiB |
+|       10000       |                 0.504 MiB |          0.000 MiB |
+|      100000       |                 2.582 MiB |          0.000 MiB |
+|      1000000      |                12.539 MiB |          0.000 MiB |
 
-Comme on le voit, `t` est très consommateur alors qu'au contraire, `t` est très économe. Bien sûr, dans le premier cas, la consommation de mémoire, dûe à d'incessantes duplications de portions de listes, a un coût temporel important qui est clairement visible pour le programme en C++ mais est totalement occulté en Python.
+Comme on le voit, `pseudo_quicksort` est très consommateur alors qu'au contraire, `quicksort` est très économe. Bien sûr, dans le premier cas, la consommation de mémoire, dûe à d'incessantes duplications de portions de listes, a un coût temporel important qui est clairement visible pour le programme en C++ mais est totalement occulté en Python.
 
 ---
 
 Comme on vient de le voir, le tri rapide est un algorithme de tri extrèmement rapide et très peu consommateur de mémoire. Le tri est effectué en place, et chaque élément de la liste effectué un nombre très faible de déplacements avant d'arriver à la bonne place.
 
-Il est vraiment dommage de le confondre avec la méthode illustrée par `t` (on choist un élément, on mets les éléments plus petits devant et les autre derrière et on recommence) qui est, certes, une méthode de tri mais reflète une approche très naïve de la programmation et ne tient absolument pas compte de questions comme comment représenter et manipuler efficacement les données. Ce n'est guère plus que l'idée d'un algorithme.
+Il est vraiment dommage de le confondre avec la méthode illustrée par `pseudo_quicksort` (on choist un élément, on mets les éléments plus petits devant et les autre derrière et on recommence) qui est, certes, une méthode de tri mais reflète une approche très naïve de la programmation et ne tient absolument pas compte de questions comme comment représenter et manipuler efficacement les données. Ce n'est guère plus que l'idée d'un algorithme.
 
-Il reste un problème important concernant l'algorithme `t`, c'est qu'il a une complexité en $O(n^2)$ dans le pire des cas. Dans un [prochain article](../quicksort_2), nous allons présenter quelques idées pour résoudre ce grave problème, sous la forme d'un autre algorithme de tri en place de complexité optimale (en $O(n \ln n)$ dans le pire des cas) et de modification de Quicksort pour assurer cette complexité optimale.
+Il reste un problème important concernant l'algorithme `quicksort`, c'est qu'il a une complexité en $O(n^2)$ dans le pire des cas. Dans un [prochain article](../quicksort_2), nous allons présenter quelques idées pour résoudre ce grave problème, sous la forme d'un autre algorithme de tri en place de complexité optimale (en $O(n \ln n)$ dans le pire des cas) et de modification de Quicksort pour assurer cette complexité optimale.

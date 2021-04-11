@@ -4,6 +4,13 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: "gatsby-plugin-root-import",
+      // options: {
+      //   src: path.join(__dirname, "src"),
+      //   components: path.join(__dirname, "src/components"),
+      // },
+    },
+    {
       resolve: `gatsby-plugin-mdx`,
       // Après enquête, cette version est correcte :
       // gatsby-remark-katex et remark-html-katex
