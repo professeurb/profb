@@ -1,7 +1,7 @@
 import React from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
 // import rangeParser from "parse-numeric-range";
-import theme from "prism-react-renderer/themes/nightOwlLight";
+import theme from "prism-react-renderer/themes/oceanicNext";
 import { Segment, Label } from "semantic-ui-react";
 import "typeface-fira-mono";
 // import { assertAbstractType } from "graphql";
