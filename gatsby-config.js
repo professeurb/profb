@@ -16,7 +16,7 @@ module.exports = {
       // gatsby-remark-katex et remark-html-katex
       options: {
         defaultLayouts: {
-          default: require.resolve("./src/components/Layout.jsx"),
+          default: require.resolve("./src/components/layout.jsx"),
         },
         gatsbyRemarkPlugins: [
           {
@@ -35,10 +35,9 @@ module.exports = {
     {
       resolve: "gatsby-source-filesystem",
       options: {
-        name: "pages",
-        path: "./src/pages/",
+        name: "mdx",
+        path: "./src/mdx/",
       },
-      __key: "pages",
     },
   ],
 };

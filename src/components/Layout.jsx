@@ -1,22 +1,16 @@
 import React from "react";
 import { Grid, Container, Header, Divider, Table } from "semantic-ui-react";
-import { useStaticQuery, graphql } from "gatsby";
+import { graphql } from "gatsby";
 import CodeBlock from "./codeblock.jsx";
 // import Toccer from "src/components/toccer.jsx";
+import { MDXRenderer } from "gatsby-plugin-mdx";
 
 import "katex/dist/katex.min.css";
 
 import { MDXProvider } from "@mdx-js/react";
 
-const Layout = ({ title, children, ...props }) => {
-  const data = useStaticQuery(graphql`
-    query HeaderQuery {
-      mdx {
-        tableOfContents
-      }
-    }
-  `);
-  console.log(props);
+const Layout = ({ data: { mdx } }) => {
+  console.log(mdx);
   return (
     <MDXProvider
       components={{
@@ -46,21 +40,22 @@ const Layout = ({ title, children, ...props }) => {
           {/* <Toccer headings={data.mdx.tableOfContents.items} /> */}
         </Grid.Column>
         <Grid.Column width={9}>
-          {props.pageContext.frontmatter.title && (
+          {mdx.frontmatter.title && (
             <Header as="h1" style={{ fontSize: "4em", fontWeight: "900" }}>
-              {props.pageContext.frontmatter.title}
+              {mdx.frontmatter.title}
             </Header>
           )}
-          {props.pageContext.frontmatter.subtitle && (
+          {mdx.frontmatter.subtitle && (
             <Header as="h2" style={{ fontSize: "2em" }}>
-              {props.pageContext.frontmatter.subtitle}
+              {mdx.frontmatter.subtitle}
             </Header>
           )}
-          {(props.pageContext.frontmatter.title ||
-            props.pageContext.frontmatter.subtitle) && (
+          {(mdx.frontmatter.title || mdx.frontmatter.subtitle) && (
             <Divider hidden section />
           )}
-          <Container>{children}</Container>
+          <Container>
+            <MDXRenderer>{mdx.body}</MDXRenderer>
+          </Container>
         </Grid.Column>
       </Grid>
     </MDXProvider>
@@ -69,4 +64,16 @@ const Layout = ({ title, children, ...props }) => {
 
 export default Layout;
 
-// https://scottspence.com/2020/02/13/smooth-scroll-toc-gatsby/
+export const pageQuery = graphql`
+  query BlogPostQuery($id: String) {
+    mdx(id: { eq: $id }) {
+      id
+      body
+      frontmatter {
+        title
+        subtitle
+      }
+      tableOfContents
+    }
+  }
+`;
