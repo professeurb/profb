@@ -6,7 +6,8 @@
       "@articles": ["_articles/*"],
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
-      "@contexts/*": ["contexts/*"]
+      "@contexts/*": ["contexts/*"],
+      "@style/*": ["style/*"]
     }
   }
 }

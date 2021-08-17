@@ -1,60 +1,95 @@
 import React from "react";
 
 import "katex/dist/katex.min.css";
-import {
-  ChakraProvider,
-  extendTheme,
-  Container,
-  Heading,
-} from "@chakra-ui/react";
-// import theme from "style/theme";
-// import Prism from "@theme-ui/prism";
+import "semantic-ui-css/semantic.min.css";
+
+import { MDXProvider } from "@mdx-js/react";
 import CodeBlock from "@components/codeblock";
-
 import Footer from "@components/header";
-
-// https://theme-ui.com/theme-spec
-
-const theme = extendTheme({
-  config: {
-    initialColorMode: "system",
-    useSystemColorMode: true,
-  },
-});
+import { Container, Header, Divider } from "semantic-ui-react";
 
 const components = {
-  h1: (props) => <Heading as="h1" {...props} />,
-  h2: (props) => <Heading as="h2" {...props} />,
-  // pre: (props) => <div {...props} />,
+  h1: (props) => <Header as="h1" {...props} />,
+  h2: (props) => <Header as="h2" {...props} />,
+  h3: (props) => <Header as="h3" {...props} />,
   pre: ({ children }) => {
     return <CodeBlock {...children.props} />;
   },
-  // code: Prism,
-  // inlineCode: (props) => {
-  //   console.log("Code");
-  //   console.log(props);
-  //   return <Prism {...props} />;
-  // },
 };
 
 export default function App(props) {
-  // console.log(props)
   const { Component, pageProps } = props;
-  // if (props.Component.isMDXComponent) console.log(props);
   // Ce n'est pas très orthodoxe ainsi, mais cela donne une chance
   // de récupérer des infos.
   const pageComponent = Component(pageProps);
-  // if (props.Component.isMDXComponent) console.log(component);
+  // On peut jeter un œil ici :
+  // https://leerob.io/snippets/mdx-table-of-contents
+  const anchors = pageComponent.props.children // React.Children.toArray(children)
+    .filter(
+      (child) =>
+        child.props?.mdxType && ["h1", "h2", "h3"].includes(child.props.mdxType)
+    )
+    .map((child) => ({
+      url: "#" + child.props.id,
+      depth:
+        (child.props?.mdxType &&
+          parseInt(child.props.mdxType.replace("h", ""), 0)) ??
+        0,
+      text: child.props.children,
+    }));
+
+  console.log(pageComponent);
+  console.log(anchors);
+
+  // if (props.Component.isMDXComponent) console.log(pageComponent);
   return (
-    <ChakraProvider theme={theme} components={components}>
+    <MDXProvider components={components}>
       <Footer />
       {props.Component.isMDXComponent && (
-        <Container sx={{ my: "50pt", variant: "text.heading" }}>
-          <h1>{pageComponent.props.meta.title}</h1>
-          <h2>{pageComponent.props.meta.subtitle}</h2>
-        </Container>
+        <>
+          <Container text>
+            <h1 style={{ fontSize: "3em" }}>
+              {pageComponent.props.meta.title}
+            </h1>
+            <h2 style={{ fontSize: "2em" }}>
+              {pageComponent.props.meta.subtitle}
+            </h2>
+          </Container>
+          <Divider hidden />
+        </>
       )}
-      <Container>{pageComponent}</Container>
-    </ChakraProvider>
+      <Container text>{pageComponent}</Container>
+    </MDXProvider>
   );
+}
+
+export async function getStaticProps({ params }) {
+  const postsDirectory = path.join(process.cwd(), "posts");
+  const mdxFiles = fs.readdirSync(postsDirectory);
+  // const mdxFiles = fs.readdirSync("posts")
+  // Loop through all post files and create array of slugs (to create links)
+  const paths = files.map((filename) => ({
+    slug: filename.replace(".mdx", ""),
+  }));
+  // Optionally loop through files, get content, and parse frontmatter
+  // const postsWithFrontmatter = files.map((filename) => {
+  //   const postContent = fs
+  //     .readFileSync(path.join("posts", params.slug + ".mdx"))
+  //     .toString();
+  //   // Dont do this.
+  //   // const frontmatter = matter(postContent)
+  //   // Parse the MDX as an AST instead
+  //   // Use the MDX library to parse here "server-side"
+  //   // Pass the parsed data back to page component below
+  //   return {
+  //     slug: filename.replace(".mdx", ""),
+  //     frontmatter,
+  //   };
+  // });
+  return {
+    props: {
+      posts: paths,
+      // or posts: postsWithFrontmatter
+    },
+  };
 }

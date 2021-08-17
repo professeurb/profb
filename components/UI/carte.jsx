@@ -5,6 +5,7 @@ import "typeface-francois-one";
 import "typeface-oswald";
 
 import { DurationContext } from "@contexts/animContext.js";
+// import { Card, Ref } from "semantic-ui-react";
 
 export default function Carte({ left, top, value, pos, zIndex, rotate }) {
   const ref = useRef();
@@ -28,7 +29,7 @@ export default function Carte({ left, top, value, pos, zIndex, rotate }) {
 
   return (
     <div
-      sx={{
+      style={{
         position: "absolute",
         width: 55,
         height: 90,

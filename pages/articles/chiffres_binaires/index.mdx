@@ -350,7 +350,7 @@ def binlog2(n):
 
 La fonction obtenue n'est pas en temps constant mais presque (le modulo ayant un coût logarithmique en la taille des arguments, c'est relativement négligeable), et nous pouvons faire mieux…
 
-### Avec une suite de _de Bruijn_
+### Avec une suite de de Bruijn
 
 La dernière méthode, en temps constant, repose sur la notion de [suite de _de Bruijn_](https://fr.wikipedia.org/wiki/Suite_de_de_Bruijn). Il s'agit d'une suite de symboles (des&nbsp;`0` et des&nbsp;`1` par exemple) qui contient toutes les séquences de ces symboles d'une longueur fixée à l'avance.
 

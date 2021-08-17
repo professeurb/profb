@@ -1,7 +1,6 @@
 import React from "react";
 import "typeface-francois-one";
 import "typeface-oswald";
-// import './tris.css'
 
 const Card = ({ id, top, left, zIndex, rotate, value, pos }) => {
   return (

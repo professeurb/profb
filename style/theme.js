@@ -1,137 +1,133 @@
-import {
-  funk,
-  swiss,
-  roboto,
-  tosh,
-  dark,
-  deep,
-  system,
-} from "@theme-ui/presets";
-// import vsdark from "@theme-ui/prism/presets/vs-dark.json";
-import night_owl from "@theme-ui/prism/presets/night-owl.json";
-import night_owl_light from "@theme-ui/prism/presets/night-owl-light.json";
-// import prism from "@theme-ui/prism/presets/prism.json";
+import { extendTheme } from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 
-const basicStyle = system;
-
-export default {
-  ...basicStyle,
-  colors: {
-    ...basicStyle.colors,
-    text: "#000",
-    background: "#fff",
-    primary: "#07c",
-    secondary: "#05a",
-    accent: "#609",
-    muted: "#fff",
-  },
-
-  // Les inlinecode ont une couleur secondary sur fond muted
-
-  // colors: {
-  //   // infinite
-  //   text: "#24292e",
-  //   background: "#fff",
-  //   primary: "#000",
-  //   secondary: "#2f363d",
-  //   accent: "#0366d6",
-  //   muted: "#d1d5da",
-  //   paper: "#fffbdd",
-  //   tertiary: "#91a3ac",
-  //   highlight: "#c8e1ff",
-  // },
+const theme = extendTheme({
   fonts: {
-    ...basicStyle.fonts,
-    //     body:
-    //       'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
-    //     heading: '"Avenir Next", sans-serif',
-    monospace: "Fira Code, Menlo, monospace",
+    heading: "Inter, sans-serif",
+    body: "Inter, sans-serif",
+  },
+  shadows: {
+    search:
+      "0 0 0 1px rgba(16,22,26,.1), 0 4px 8px rgba(16,22,26,.2), 0 18px 46px 6px rgba(16,22,26,.2)",
   },
   styles: {
-    ...basicStyle.styles,
-    code: { ...night_owl_light },
-    CodeBlock: {
-      ...night_owl_light,
-      overflow: `auto`,
-      pre: {
-        backgroundColor: `transparent`,
-        float: `left`,
-        minWidth: `100%`,
+    global: (props) => ({
+      body: {
+        color: mode("gray.700", "whiteAlpha.900")(props),
+        ".deleted": {
+          color: "#ff8383 !important",
+          fontStyle: "normal !important",
+        },
+        ".inserted": {
+          color: "#b5f4a5 !important",
+          fontStyle: "normal !important",
+        },
       },
-      highlightLine: {
-        backgroundColor: `#f0f0f0`,
-        borderLeftColor: `#49d0c5`,
-        borderLeftStyle: `solid`,
-        borderLeftWidth: `0.25em`,
-        display: `block`,
-        marginRight: `-1em`,
-        marginLeft: `-1em`,
-        paddingRight: `1em`,
-        paddingLeft: `0.75em`,
-      },
-      title: {
-        fontFamily: `monospace`,
-        // backgroundColor: night_owl_light.backgroundColor,
-        borderBottomWidth: `2px`,
-        borderBottomStyle: `solid`,
-        borderBottomColor: `#f0f0f0`,
-        // color: night_owl_light.color,
-      },
-    },
-    pre: {
-      ...basicStyle.styles.pre,
-      padding: 16,
-      margin: [16, 0],
-      border: 2,
-      borderRadius: 5,
-    },
-    h1: {
-      fontSize: 32,
-      fontFamily: "heading",
-      fontWeight: "heading",
-      color: "primary",
-      mt: 4,
-      mb: 2,
-    },
+    }),
   },
-  links: {
-    bold: {
-      fontWeight: "bold",
-    },
-    nav: {
-      fontWeight: "bold",
-      color: "inherit",
-      textDecoration: "none",
-    },
-  },
-  buttons: {
-    primary: {
-      // border: 1,
-      // borderColor: "highlight",
-      // borderStyle: "solid",
-      color: "background",
-      bg: "primary",
-      "&:hover": {
-        bg: "secondary",
-        // color: "highlight",
-      },
-      "&:disabled": {
-        opacity: 0.33,
-      },
-      "&:disabled&:hover": { bg: "primary" },
-    },
-  },
-  sizes: {
-    ...basicStyle.sizes,
-    container: 768,
-  },
-  text: {
+  textStyles: {
     heading: {
+      fontFamily: "heading",
+      textAlign: "center",
+      fontWeight: "bold",
+      letterSpacing: "-0.015em",
+      lineHeight: "1.24",
+      fontSize: { base: "2rem", md: "3.5rem" },
+    },
+    "heading-2": {
+      fontFamily: "heading",
+      textAlign: "center",
+      fontWeight: "bold",
+      letterSpacing: "-0.015em",
+      lineHeight: "1.24",
+      fontSize: { base: "1.75rem", md: "2.75rem" },
+    },
+    caps: {
+      textTransform: "uppercase",
+      fontSize: "sm",
+      letterSpacing: "widest",
+      fontWeight: "bold",
+    },
+    mdx: {
       h1: {
-        fontWeight: 800,
-        fontSize: 64,
-        lineHeight: 1.0,
+        mt: "2rem",
+        mb: ".25rem",
+        lineHeight: 1.2,
+        fontWeight: "bold",
+        fontSize: "1.875rem",
+        letterSpacing: "-.025em",
+      },
+      h2: {
+        mt: "4rem",
+        mb: "0.5rem",
+        lineHeight: 1.3,
+        fontWeight: "semibold",
+        fontSize: "1.5rem",
+        letterSpacing: "-.025em",
+        "& + h3": {
+          mt: "1.5rem",
+        },
+      },
+      h3: {
+        mt: "3rem",
+        // mb: "0.5rem",
+        lineHeight: 1.25,
+        fontWeight: "semibold",
+        fontSize: "1.25rem",
+        letterSpacing: "-.025em",
+      },
+      h4: {
+        mt: "3rem",
+        lineHeight: 1.375,
+        fontWeight: "semibold",
+        fontSize: "1.125rem",
+      },
+      a: {
+        color: "teal.500",
+        fontWeight: "semibold",
+        transition: "color 0.15s",
+        transitionTimingFunction: "ease-out",
+        _hover: {
+          color: "teal.600",
+        },
+      },
+      p: {
+        mt: "1.25rem",
+        lineHeight: 1.7,
+        "blockquote &": {
+          mt: 0,
+        },
+      },
+      hr: {
+        my: "4rem",
+      },
+      blockquote: {
+        bg: "orange.100",
+        borderWidth: "1px",
+        borderColor: "orange.200",
+        rounded: "lg",
+        px: "1.25rem",
+        py: "1rem",
+        my: "1.5rem",
+      },
+      ul: {
+        mt: "1.5rem",
+        ml: "1.25rem",
+        "blockquote &": { mt: 0 },
+        "& > * + *": {
+          mt: "0.25rem",
+        },
+      },
+      code: {
+        rounded: "sm",
+        px: "1",
+        fontSize: "0.875em",
+        py: "2px",
+        whiteSpace: "nowrap",
+        lineHeight: "normal",
       },
     },
   },
-};
+});
+
+export default theme;

@@ -1,13 +1,5 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPause,
-  faPlay,
-  faStepForward,
-} from "@fortawesome/free-solid-svg-icons";
-
-import { FaPlay, FaPause, FaStepForward } from "react-icons/fa";
-import { Button, Flex, Icon } from "@chakra-ui/react";
+import { Button, Icon } from "semantic-ui-react";
 
 export class AnimButton extends React.Component {
   constructor(props) {
@@ -68,76 +60,39 @@ export class AnimButton extends React.Component {
 
   render() {
     return (
-      <Flex
-        sx={{
-          // border: "1px solid",
-          // borderColor: "primary",
-          // width: "fit-content",
-          // borderRadius: 3,
-          // cursor: "pointer",
-        }}
-      >
+      <Button.Group>
         {this.props.name && (
-          <Flex sx={{ placeItems: "center" }}>
-            <Button
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                // borderTopLeftRadius: 3,
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 0,
-                // border: "0px solid",
-                // backgroundColor: "Highlight",
-              }}
-              disabled={this.state.playDisabled || this.props.disabled}
-              onClick={() => {
-                this.state.playResolve();
-              }}
-            >
-              {this.props.name}
-            </Button>
-          </Flex>
-        )}
-        <Flex
-          sx={{
-            border: "0px solid",
-            placeItems: "center",
-            mr: "1px",
-          }}
-        >
           <Button
-            sx={{ borderRadius: 0 }}
+            icon
+            labelPosition="right"
             disabled={this.state.playDisabled || this.props.disabled}
             onClick={() => {
               this.state.playResolve();
             }}
           >
-            <FontAwesomeIcon icon={faPlay} />
+            {this.props.name}
+            <Icon name="play" />
           </Button>
-        </Flex>
-        <Flex sx={{ placeItems: "center", mr: "1px" }}>
-          <Button
-            sx={{ borderRadius: 0 }}
-            disabled={this.state.pauseDisabled || this.props.disabled}
-            onClick={() => {
-              this.enable();
-            }}
-          >
-            <FontAwesomeIcon icon={faPause} />
-          </Button>
-        </Flex>
-        <Flex sx={{ placeItems: "center" }}>
-          <Button
-            sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-            disabled={this.state.stepDisabled || this.props.disabled}
-            onClick={() => {
-              this.state.stepResolve();
-            }}
-          >
-            <FontAwesomeIcon icon={faStepForward} />
-          </Button>
-        </Flex>
-      </Flex>
+        )}
+        <Button
+          icon
+          disabled={this.state.pauseDisabled || this.props.disabled}
+          onClick={() => {
+            this.enable();
+          }}
+        >
+          <Icon name="pause" />
+        </Button>
+        <Button
+          icon
+          disabled={this.state.stepDisabled || this.props.disabled}
+          onClick={() => {
+            this.state.stepResolve();
+          }}
+        >
+          <Icon name="step forward" />
+        </Button>
+      </Button.Group>
     );
   }
 

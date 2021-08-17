@@ -1,30 +1,39 @@
-// import fs from "fs";
+import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-// const articleDirectory = path.join(process.cwd(), "_articles");
+const postsDirectory = join(process.cwd(), "src/markdown/posts");
 
-// export async function bla() {
-//   const truc = require.context("../pages", true, /\.[a-z]+$/);
-//   const stuff = [];
-//   for (const key of truc.keys()) {
-//     stuff.push(key);
-//   }
-//   return stuff;
-// }
+export function getPostSlugs() {
+  return fs.readdirSync(postsDirectory);
+}
 
-// export async function getArticles() {
-//   const articles = require.context("_articles/", true, /index\.mdx$/);
-//   const data = articles.keys().map((key) => key.split("/").slice(1, -1));
+export function getPostBySlug(slug, fields = []) {
+  const realSlug = slug.replace(/\.mdx$/, "");
+  const fullPath = join(postsDirectory, `${realSlug}.mdx`);
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const { data, content } = matter(fileContents);
+  const items = {};
+  // Ensure only the minimal needed data is exposed
+  fields.forEach((field) => {
+    if (field === "slug") {
+      items[field] = realSlug;
+    }
+    if (field === "content") {
+      items[field] = content;
+    }
+    if (data[field]) {
+      items[field] = data[field];
+    }
+  });
+  return items;
+}
 
-//   return data;
-// }
-
-// export async function getArticle(slug) {
-//   slug.push("index.mdx");
-//   const the_path = path.join(articleDirectory, slug.join("/"));
-//   // const content = fs.readFileSync(the_path, "utf8");
-
-//   return [];
-// }
-
+export function getAllPosts(fields = []) {
+  const slugs = getPostSlugs();
+  const posts = slugs
+    .map((slug) => getPostBySlug(slug, fields))
+    // sort posts by date in descending order
+    .sort((post1, post2) => (post1.date > post2.date ? "-1" : "1"));
+  return posts;
+}

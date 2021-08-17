@@ -1,27 +1,18 @@
 import React, { useState, useContext } from "react";
 import Carte from "@components/UI/carte.jsx";
-import { Flex, Button } from "@chakra-ui/react";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRandom } from "@fortawesome/free-solid-svg-icons";
+import { Button, Icon, Segment } from "semantic-ui-react";
 
 import { DurationContext, DurationProvider } from "@contexts/animContext.js";
 
-import { AnimButton } from "@components/AnimButton.jsx";
+import { AnimButton } from "@components/animbutton.jsx";
 
 function Mat({ cards }) {
   return (
     <div
-      sx={{
+      style={{
         position: "relative" /* it is a container */,
         width: "849px !important",
         height: "250px",
-        marginTop: "20px",
-        marginBottom: "20px",
-        backgroundColor: "#fafafa",
-        border: "1px solid",
-        borderRadius: "10px",
-        borderColor: "#bbb",
       }}
     >
       {cards.map((card, index) => (
@@ -175,21 +166,23 @@ function SortBox2({ countOfCards, sort }) {
   }
 
   return (
-    <>
-      <Mat cards={cards} />
-      <Flex>
+    <Segment.Group>
+      <Segment secondary>
+        <Mat cards={cards} />
+      </Segment>
+      <Segment>
         <Button
+          icon
+          labelPosition="right"
           onClick={shuffle}
           disabled={shuffleButtonDisabled}
-          sx={{
-            marginRight: "5pt",
-          }}
         >
-          Mélanger <FontAwesomeIcon icon={faRandom} />
+          Mélanger
+          <Icon name="random" />
         </Button>
         <AnimButton name="Trier" anim={anim} disabled={animButtonDisabled} />
-      </Flex>
-    </>
+      </Segment>
+    </Segment.Group>
   );
 }
 

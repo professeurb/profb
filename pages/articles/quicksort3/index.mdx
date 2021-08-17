@@ -1,3 +1,7 @@
+---
+title: "New Website"
+---
+
 export const meta = {
   title: "Le Problème avec QuickSort, partie 3",
   subtitle:
@@ -14,7 +18,7 @@ Règle primordiale de l'optimisation&nbsp;: **On ne cherche à optimiser que lor
 
 Rappelons la structure de l'algorithme de tri par insertion. Il est composé de deux boucles, la boucle interne consistant en un parcours du tableau vers la gauche à partir de la position `i` pour savoir jusqu'où décaler la valeur `l[i]` en train d'être traitée.
 
-```python
+```python title=Bonjour hl=1-3
 def insertsort(l):
     for i in range(1, len(l)):
         v = l[i]
